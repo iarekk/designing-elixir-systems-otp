@@ -12,8 +12,18 @@ defmodule MasteryTest do
       substitutions: %{"1" => "2"}
     }
 
-    assert r.asked == "Hello?"
+    assert getQ(r) == "Hello?"
 
     assert r.substitutions["1"] == "2"
+  end
+
+  test "pass BS" do
+    q = getQ(%Mastery.Core.Question{asked: 5})
+    assert q == 5
+  end
+
+  @spec getQ(%Mastery.Core.Question{}) :: String.t()
+  def getQ(%Mastery.Core.Question{asked: q}) do
+    q
   end
 end
