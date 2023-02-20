@@ -17,6 +17,11 @@ defmodule MasteryTest do
     assert r.substitutions["1"] == "2"
   end
 
+  test "quiz" do
+    quiz = %Mastery.Core.Quiz{mastery: 5}
+    assert quiz.mastery == 5
+  end
+
   test "pass BS" do
     q = getQ(%Mastery.Core.Question{asked: 5})
     assert q == 5
