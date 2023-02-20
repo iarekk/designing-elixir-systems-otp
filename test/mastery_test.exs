@@ -27,7 +27,7 @@ defmodule MasteryTest do
     assert q == 5
   end
 
-  @spec getQ(%Mastery.Core.Question{}) :: String.t()
+  @spec getQ(Mastery.Core.Question.t()) :: String.t()
   def getQ(%Mastery.Core.Question{asked: q}) do
     q
   end
