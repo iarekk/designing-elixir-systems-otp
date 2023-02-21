@@ -6,6 +6,13 @@ defmodule MasteryTest do
     assert Mastery.hello() == :world
   end
 
+  test "can create a template" do
+    temp1 = Mastery.Core.Template.new(name: :lol, raw: "<%= left %> + <%= right %>")
+    IO.puts("Compiled: #{inspect(temp1.compiled)}")
+    assert temp1.name == :lol
+    assert nil != temp1.compiled
+  end
+
   test "can create a question" do
     r = %Mastery.Core.Question{
       asked: "Hello?",

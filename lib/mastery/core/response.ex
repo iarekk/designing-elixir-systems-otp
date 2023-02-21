@@ -13,8 +13,8 @@ defmodule Mastery.Core.Response do
 
   @spec new(
           Mastery.Core.Quiz.t(),
-          any,
-          any
+          String.t(),
+          String.t()
         ) :: Mastery.Core.Response.t()
   def new(quiz, email, answer) do
     question = quiz.current_question
