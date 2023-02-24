@@ -8,9 +8,9 @@ defmodule MasteryTest do
 
   test "can create a template" do
     temp1 = Mastery.Core.Template.new(name: :lol, raw: "<%= left %> + <%= right %>")
-    IO.puts("Compiled: #{inspect(temp1.compiled)}")
     assert temp1.name == :lol
-    assert nil != temp1.compiled
+    {result, _bindings} = Code.eval_quoted(temp1.compiled, left: 100, right: "hehe")
+    assert result == "100 + hehe"
   end
 
   test "can create a question" do
