@@ -16,7 +16,7 @@ defmodule Mastery.Core.Response do
           String.t(),
           String.t()
         ) :: Mastery.Core.Response.t()
-  def new(quiz, email, answer) do
+  def new(%Mastery.Core.Quiz{} = quiz, email, answer) do
     question = quiz.current_question
     template = question.template
 
