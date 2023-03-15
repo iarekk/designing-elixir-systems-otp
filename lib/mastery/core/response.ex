@@ -1,4 +1,5 @@
 defmodule Mastery.Core.Response do
+  alias Mastery.Core.Quiz
   defstruct ~w[quiz_title template_name to email answer correct timestamp]a
 
   @type t :: %__MODULE__{
@@ -8,15 +9,11 @@ defmodule Mastery.Core.Response do
           email: String.t(),
           answer: String.t(),
           correct: boolean(),
-          timestamp: Time.t()
+          timestamp: DateTime.t()
         }
 
-  @spec new(
-          Mastery.Core.Quiz.t(),
-          String.t(),
-          String.t()
-        ) :: Mastery.Core.Response.t()
-  def new(%Mastery.Core.Quiz{} = quiz, email, answer) do
+  @spec new(Mastery.Core.Quiz.t(), any, any) :: Mastery.Core.Response.t()
+  def new(%Quiz{} = quiz, email, answer) do
     question = quiz.current_question
     template = question.template
 

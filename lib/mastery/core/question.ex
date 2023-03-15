@@ -8,6 +8,7 @@ defmodule Mastery.Core.Question do
           template: Mastery.Core.Template.t()
         }
 
+  @spec new(Mastery.Core.Template.t()) :: Mastery.Core.Question.t()
   def new(%Template{} = template) do
     subs =
       template.generators
@@ -28,11 +29,11 @@ defmodule Mastery.Core.Question do
     generator.()
   end
 
-  defp compile(template, substitutions) do
+  def compile(template, substitutions) do
     template.compiled |> Code.eval_quoted(assigns: substitutions) |> elem(0)
   end
 
-  defp evaluate(substitutions, template) do
+  def evaluate(substitutions, template) do
     %__MODULE__{
       asked: compile(template, substitutions),
       substitutions: substitutions,

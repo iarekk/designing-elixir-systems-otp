@@ -10,6 +10,17 @@ defmodule Mastery.Core.Quiz do
             record: %{},
             mastered: []
 
+  @type t :: %__MODULE__{
+          title: String.t(),
+          mastery: Integer,
+          current_question: Question.t(),
+          last_response: Response.t(),
+          templates: map(),
+          used: list(Template.t()),
+          mastered: list(Template.t()),
+          record: map()
+        }
+
   def new(fields) do
     struct!(__MODULE__, fields)
   end
@@ -19,7 +30,7 @@ defmodule Mastery.Core.Quiz do
 
     templates = update_in(quiz.templates, [template.category], &add_to_list_or_nil(&1, template))
 
-    %Quiz{quiz | templates: templates}
+    %__MODULE__{quiz | templates: templates}
   end
 
   def add_to_list_or_nil(nil, x), do: [x]
