@@ -2,8 +2,8 @@ defmodule Mastery.Core.Template do
   defstruct ~w[name category instructions raw compiled generators checker]a
 
   @type t :: %__MODULE__{
-          name: atom,
-          category: atom,
+          name: atom(),
+          category: atom(),
           instructions: String.t(),
           raw: String.t(),
           compiled: Macro,
@@ -11,6 +11,7 @@ defmodule Mastery.Core.Template do
           checker: fun()
         }
 
+  @spec new(keyword) :: t()
   def new(fields) do
     IO.puts("Constructor called #{inspect(fields)}")
     raw = Keyword.fetch!(fields, :raw)
