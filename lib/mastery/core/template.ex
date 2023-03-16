@@ -13,7 +13,7 @@ defmodule Mastery.Core.Template do
 
   @spec new(keyword) :: t()
   def new(fields) do
-    IO.puts("Constructor called #{inspect(fields)}")
+    # IO.puts("Constructor called #{inspect(fields)}")
     raw = Keyword.fetch!(fields, :raw)
 
     struct!(

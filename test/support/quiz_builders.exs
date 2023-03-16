@@ -1,12 +1,12 @@
 defmodule QuizBuilders do
   defmacro __using__(_options) do
     quote do
-      alias Mastery.Core.{Quiz, Response, Template}
+      alias Mastery.Core.{Question, Quiz, Response, Template}
       import QuizBuilders, only: :functions
     end
   end
 
-  alias Mastery.Core.{Quiz, Response, Template}
+  alias Mastery.Core.{Question, Quiz, Response, Template}
 
   def template_fields(overrides \\ []) do
     Keyword.merge(
@@ -45,5 +45,28 @@ defmodule QuizBuilders do
     left = Keyword.fetch!(substitutions, :left)
     right = Keyword.fetch!(substitutions, :right)
     to_string(left + right) == String.trim(answer)
+  end
+
+  def quiz_fields(overrides) do
+    Keyword.merge([title: "Simple Arithmetic"], overrides)
+  end
+
+  def build_quiz(quiz_overrides \\ []) do
+    quiz_overrides
+    |> quiz_fields
+    |> Quiz.new()
+  end
+
+  def build_question(overrides \\ []) do
+    overrides
+    |> template_fields
+    |> Template.new()
+    |> Question.new()
+  end
+
+  def build_quiz_with_two_templates(quiz_overrides \\ []) do
+    build_quiz(quiz_overrides)
+    |> Quiz.add_template(template_fields())
+    |> Quiz.add_template(double_digit_addition_template_fields())
   end
 end
