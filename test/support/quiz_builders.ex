@@ -1,4 +1,7 @@
 defmodule QuizBuilders do
+  @moduledoc """
+  QuizBuilder support
+  """
   defmacro __using__(_options) do
     quote do
       alias Mastery.Core.{Question, Quiz, Response, Template}
