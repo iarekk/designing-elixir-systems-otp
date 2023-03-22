@@ -57,5 +57,6 @@ defmodule ResponseTest do
 
   defp setup_marker(context) do
     # IO.puts("setup called for '#{context.test}'")
+    {:ok, context}
   end
 end
