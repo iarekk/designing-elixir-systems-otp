@@ -10,6 +10,8 @@ defmodule Mastery.Core.Question do
 
   @spec new(Mastery.Core.Template.t()) :: Mastery.Core.Question.t()
   def new(%Template{} = template) do
+    # %{left: 1} |> (Enum.map (&(&1))) renders into [left: 1],
+    # turning a map into a keyword list as we go
     subs =
       template.generators
       |> Enum.map(&build_substitution/1)
@@ -18,7 +20,9 @@ defmodule Mastery.Core.Question do
   end
 
   def build_substitution({name, choices_of_generator}) do
-    {name, choose(choices_of_generator)}
+    ret = {name, choose(choices_of_generator)}
+    # IO.puts("build_sub #{inspect(ret)}")
+    ret
   end
 
   def choose(choices) when is_list(choices) do
