@@ -7,4 +7,18 @@ defmodule QuestionTest do
 
     assert question.substitutions == [left: 1, right: 2]
   end
+
+  test "function generators are called on the left" do
+    megavalue = 42
+    question = build_question(generators: addition_generators(fn -> megavalue end, [0]))
+
+    assert Keyword.get(question.substitutions, :left) == megavalue
+  end
+
+  test "function generators are called on the right" do
+    megavalue = 42
+    question = build_question(generators: addition_generators([0], fn -> megavalue end))
+
+    assert Keyword.get(question.substitutions, :right) == megavalue
+  end
 end
