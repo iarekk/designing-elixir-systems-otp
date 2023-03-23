@@ -21,4 +21,10 @@ defmodule QuestionTest do
 
     assert Keyword.get(question.substitutions, :right) == megavalue
   end
+
+  test "test what's asked" do
+    question = build_question(generators: addition_generators([1], [2]))
+
+    assert question.asked == "1 + 2"
+  end
 end
