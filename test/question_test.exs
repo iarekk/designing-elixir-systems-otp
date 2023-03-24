@@ -27,4 +27,25 @@ defmodule QuestionTest do
 
     assert question.asked == "1 + 2"
   end
+
+  test "test random generators" do
+    generators = addition_generators(Enum.to_list(1..9), [0])
+
+    assert eventually_match(generators, 1)
+    assert eventually_match(generators, 9)
+    # assert eventually_match(generators, 15) # this will fail
+  end
+
+  defp eventually_match(generators, expected_answer, depth \\ 1000)
+
+  defp eventually_match(_, _, 0), do: false
+
+  defp eventually_match(generators, expected_answer, depth) do
+    subs = build_question(generators: generators).substitutions
+    # IO.puts("subs: #{inspect(subs)}")
+    left = Keyword.fetch!(subs, :left)
+    # IO.puts("found left: #{inspect(left)} at depth #{depth}")
+
+    left == expected_answer || eventually_match(generators, expected_answer, depth - 1)
+  end
 end
