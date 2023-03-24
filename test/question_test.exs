@@ -40,13 +40,10 @@ defmodule QuestionTest do
     Stream.repeatedly(fn ->
       build_question(generators: generators).substitutions
     end)
-    |> Stream.with_index()
-    |> Stream.take_while(fn {_subs, index} ->
-      index < max_iterations
-    end)
+    |> stream_limit(max_iterations)
     |> Enum.find(
       false,
-      fn {subs, _index} ->
+      fn subs ->
         Keyword.fetch!(subs, :left) == expected_answer
       end
     )

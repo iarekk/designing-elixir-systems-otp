@@ -16,9 +16,7 @@ defmodule QuizTest do
     Stream.repeatedly(fn ->
       Quiz.select_question(quiz) |> template()
     end)
-    |> Stream.with_index()
-    |> Stream.take_while(fn {_template, index} -> index < max_iterations end)
-    |> Stream.map(fn {el, _index} -> el end)
+    |> stream_limit(max_iterations)
     |> Enum.find(
       false,
       fn template ->
