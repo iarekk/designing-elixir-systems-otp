@@ -72,4 +72,11 @@ defmodule QuizBuilders do
     |> Quiz.add_template(template_fields())
     |> Quiz.add_template(double_digit_addition_template_fields())
   end
+
+  def stream_limit(stream, limit) do
+    stream
+    |> Stream.with_index()
+    |> Stream.take_while(fn {_template, index} -> index < limit end)
+    |> Stream.map(fn {el, _index} -> el end)
+  end
 end
