@@ -38,17 +38,16 @@ defmodule QuestionTest do
 
   defp eventually_match(generators, expected_answer, max_iterations \\ 1000) do
     Stream.repeatedly(fn ->
-      subs = build_question(generators: generators).substitutions
-      Keyword.fetch!(subs, :left)
+      build_question(generators: generators).substitutions
     end)
     |> Stream.with_index()
-    |> Stream.take_while(fn {_num, index} ->
+    |> Stream.take_while(fn {_subs, index} ->
       index < max_iterations
     end)
     |> Enum.find(
       false,
-      fn {el, _index} ->
-        el == expected_answer
+      fn {subs, _index} ->
+        Keyword.fetch!(subs, :left) == expected_answer
       end
     )
   end
