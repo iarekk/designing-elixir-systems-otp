@@ -33,19 +33,31 @@ defmodule QuestionTest do
 
     assert eventually_match(generators, 1)
     assert eventually_match(generators, 9)
-    # assert eventually_match(generators, 15) # this will fail
+    refute eventually_match(generators, 15)
   end
 
-  defp eventually_match(generators, expected_answer, depth \\ 1000)
-
-  defp eventually_match(_, _, 0), do: false
-
-  defp eventually_match(generators, expected_answer, depth) do
-    subs = build_question(generators: generators).substitutions
-    # IO.puts("subs: #{inspect(subs)}")
-    left = Keyword.fetch!(subs, :left)
-    # IO.puts("found left: #{inspect(left)} at depth #{depth}")
-
-    left == expected_answer || eventually_match(generators, expected_answer, depth - 1)
+  defp eventually_match(generators, expected_answer, max_iterations \\ 1000) do
+    Stream.repeatedly(fn ->
+      subs = build_question(generators: generators).substitutions
+      Keyword.fetch!(subs, :left)
+    end)
+    |> Stream.with_index()
+    |> Stream.take_while(fn {_num, index} ->
+      index < max_iterations
+    end)
+    |> Enum.find(
+      false,
+      fn {el, _index} ->
+        el == expected_answer
+      end
+    )
   end
+
+  # Version in the book, it doesn't terminate on values out of bounds:
+  # def eventually_match(generators, answer) do
+  #   Stream.repeatedly(fn ->
+  #     build_question(generators: generators).substitutions
+  #   end)
+  #   |> Enum.find(fn substitution -> Keyword.fetch!(substitution, :left) == answer end)
+  # end
 end
