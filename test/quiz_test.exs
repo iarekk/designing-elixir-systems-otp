@@ -35,6 +35,28 @@ defmodule QuizTest do
     end
   end
 
+  describe "a quiz that always adds one and two" do
+    setup [:quiz_always_adds_one_and_two]
+
+    test "a wrong answer resets mastery", %{quiz: quiz} do
+      quiz
+      |> Quiz.select_question()
+      |> assert_more_questions
+      |> right_answer
+      |> Quiz.select_question()
+      |> assert_more_questions
+      |> wrong_answer
+      |> Quiz.select_question()
+      |> assert_more_questions
+      |> right_answer
+      |> Quiz.select_question()
+      |> assert_more_questions
+      |> right_answer
+      |> Quiz.select_question()
+      |> refute_more_questions
+    end
+  end
+
   defp eventually_selects_other_template(
          %Quiz{} = quiz,
          %Template{} = current_template,
