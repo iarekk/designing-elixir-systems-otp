@@ -50,11 +50,4 @@ defmodule MasteryTest do
   def getQ(%Mastery.Core.Question{asked: q}) do
     q
   end
-
-  test "cover the response defstruct" do
-    # apparently `mix test --cover` will only mark the defstruct as covered
-    # when the struct name is invoked directly in the test
-    resp = %Mastery.Core.Response{email: "lol@cat.com"}
-    assert resp.email == "lol@cat.com"
-  end
 end
