@@ -1,4 +1,4 @@
-alias Mastery.Core.WorkerSample
+alias Experiments.WorkerSample
 IO.puts "halt on error with context"
 
 WorkerSample.stream_work()

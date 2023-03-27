@@ -1,4 +1,4 @@
-defmodule Mastery.Core.WithSample do
+defmodule Experiments.WithSample do
   def work(n) do
     if :rand.uniform(10) == 1 do
       {:error, "oops!", n}

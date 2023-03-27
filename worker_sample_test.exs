@@ -1,5 +1,5 @@
 IO.puts "Report partial success:"
-Mastery.Core.WorkerSample.stream_work
+Experiments.WorkerSample.stream_work
 |> Enum.take(10)
 |> IO.inspect
 
