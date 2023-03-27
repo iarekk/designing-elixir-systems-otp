@@ -13,4 +13,21 @@ defmodule Mastery.Boundary.QuizManager do
     new_quizzes = Map.put(quizzes, new_quiz.title, new_quiz)
     {:reply, :ok, new_quizzes}
   end
+
+  def handle_call(
+        {:add_template, quiz_title, template_fields},
+        _from,
+        quizzes
+      ) do
+    new_quizzes =
+      Map.update!(quizzes, quiz_title, fn quiz ->
+        Quiz.add_template(quiz, template_fields)
+      end)
+
+    {:reply, :ok, new_quizzes}
+  end
+
+  def handle_call({:lookup_quiz_by_title, quiz_title}, _from, quizzes) do
+    {:reply, quizzes[quiz_title], quizzes}
+  end
 end
