@@ -1,4 +1,4 @@
-alias Mastery.Core.WithSample
+alias Experiments.WithSample
 
 WithSample.execute_function_safely_twice(&WithSample.work/1, 10, 20) |> IO.inspect
 
