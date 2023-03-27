@@ -60,7 +60,7 @@ defmodule QuizBuilders do
     |> Quiz.new()
   end
 
-  def build_question(overrides \\ []) do
+  def build_question(overrides) do
     overrides
     |> template_fields
     |> Template.new()
