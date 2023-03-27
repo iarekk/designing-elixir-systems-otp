@@ -41,12 +41,9 @@ defmodule QuestionTest do
       build_question(generators: generators).substitutions
     end)
     |> stream_limit(max_iterations)
-    |> Enum.find(
-      false,
-      fn subs ->
-        Keyword.fetch!(subs, :left) == expected_answer
-      end
-    )
+    |> Enum.any?(fn subs ->
+      Keyword.fetch!(subs, :left) == expected_answer
+    end)
   end
 
   # Version in the book, it doesn't terminate on values out of bounds:
