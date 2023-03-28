@@ -30,6 +30,8 @@ defmodule Mastery.Boundary.Validator do
   end
 
   # TODO this is suspect, shoudln't we return [errors] instead?
+  # Original book code:
+  # def check_field(:ok, _errors, _field_name), do: :ok
   def check_field(:ok, errors, _field_name), do: errors
 
   def check_field({:error, message}, errors, field_name) do
