@@ -8,6 +8,16 @@ defmodule QuizValidatorTest do
     assert QuizValidator.errors(quiz) == [title: "Must be a string"]
   end
 
+  test "verify quiz required fields with actual values" do
+    quiz = %Quiz{title: "lol", mastery: 3}
+    assert QuizValidator.errors(quiz) == []
+  end
+
+  test "verify quiz required fields with bad mastery value" do
+    quiz = %Quiz{title: "lol", mastery: :it_is_grand}
+    assert QuizValidator.errors(quiz) == [mastery: "Must be an integer"]
+  end
+
   test "verify regular map required fields" do
     quiz = Map.new()
     assert QuizValidator.errors(quiz) == [title: "Is required"]
