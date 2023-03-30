@@ -1,5 +1,5 @@
 defmodule Mastery.Boundary.Validator do
-  def require(errors, fields, field_name, validator) do
+  def required(errors, fields, field_name, validator) do
     present = Map.has_key?(fields, field_name)
     # IO.puts("Map has key: #{present}, #{inspect(fields)}, #{inspect(field_name)}")
     check_required_field(present, fields, errors, field_name, validator)
@@ -9,7 +9,7 @@ defmodule Mastery.Boundary.Validator do
     present = Map.has_key?(fields, field_name)
 
     if(present) do
-      require(errors, fields, field_name, validator)
+      required(errors, fields, field_name, validator)
     else
       errors
     end
