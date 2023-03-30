@@ -1,7 +1,6 @@
 defmodule QuizValidatorTest do
   use ExUnit.Case
   alias Mastery.Boundary.QuizValidator
-  alias Mastery.Core.Quiz
 
   test "verify quiz checks title type" do
     quiz = [title: :lol]

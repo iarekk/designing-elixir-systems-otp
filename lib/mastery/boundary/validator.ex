@@ -41,4 +41,7 @@ defmodule Mastery.Boundary.Validator do
   def check_field({:errors, messages}, errors, field_name) do
     errors ++ Enum.map(messages, &{field_name, &1})
   end
+
+  def is_not_blank(str) when is_binary(str), do: String.trim(str) != ""
+  def is_not_blank(_), do: false
 end

@@ -12,7 +12,7 @@ defmodule Mastery.Boundary.QuizValidator do
   def errors(_), do: [{nil, "A list of fields is required"}]
 
   def validate_title(title) when is_binary(title) do
-    check(String.trim(title) != "", {:error, "Can't be blank"})
+    check(is_not_blank(title), {:error, "Can't be blank"})
   end
 
   def validate_title(_), do: {:error, "Must be a string"}
