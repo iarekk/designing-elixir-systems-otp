@@ -2,7 +2,6 @@ defmodule Mastery.Boundary.TemplateValidator do
   import Mastery.Boundary.Validator
 
   def errors(fields) when is_list(fields) do
-    # why is template taking a
     fields = Map.new(fields)
 
     []
