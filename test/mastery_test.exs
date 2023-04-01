@@ -2,10 +2,6 @@ defmodule MasteryTest do
   use ExUnit.Case
   doctest Mastery
 
-  test "greets the world" do
-    assert Mastery.hello() == :world
-  end
-
   test "update in" do
     mymap = %{a: ["foo", "bar", "baz"], b: {"fizz", "buzz"}}
     mynewmap = update_in(mymap, [:a], &add_to_list_or_nil(&1, "lol"))
