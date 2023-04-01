@@ -18,7 +18,7 @@ defmodule Mastery do
   def add_template(title, fields) do
     # checking for empty list of errors, instead of :ok like in the book
     with [] <- TemplateValidator.errors(fields),
-         :ok <- GenServer.call(Quizmanager, {:add_template, title, fields}),
+         :ok <- GenServer.call(QuizManager, {:add_template, title, fields}),
          do: :ok,
          else: (error -> error)
   end
@@ -34,7 +34,7 @@ defmodule Mastery do
     GenServer.call(session, :select_question)
   end
 
-  def answer_questio(session, answer) do
-    GenServer.call(session, {:ansser_question, answer})
+  def answer_question(session, answer) do
+    GenServer.call(session, {:answer_question, answer})
   end
 end
