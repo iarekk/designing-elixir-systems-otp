@@ -3,10 +3,6 @@ defmodule Mastery do
   alias Mastery.Boundary.{TemplateValidator, QuizValidator}
   alias Mastery.Core.Quiz
 
-  def start_quiz_manager() do
-    GenServer.start_link(QuizManager, %{}, name: QuizManager)
-  end
-
   def build_quiz(fields) do
     # checking for empty list of errors, instead of :ok like in the book
     with [] <- QuizValidator.errors(fields),
@@ -25,16 +21,16 @@ defmodule Mastery do
 
   def take_quiz(title, email) do
     with %Quiz{} = quiz <- QuizManager.lookup_quiz_by_title(title),
-         {:ok, session} <- GenServer.start_link(QuizSession, {quiz, email}),
-         do: session,
+         {:ok, _} <- QuizSession.take_quiz(quiz, email),
+         do: {title, email},
          else: (error -> error)
   end
 
-  def select_question(session) do
-    GenServer.call(session, :select_question)
+  def select_question({_title, _email} = name) do
+    GenServer.call(QuizSession.via(name), :select_question)
   end
 
-  def answer_question(session, answer) do
-    GenServer.call(session, {:answer_question, answer})
+  def answer_question({_title, _email} = name, answer) do
+    GenServer.call(QuizSession.via(name), {:answer_question, answer})
   end
 end

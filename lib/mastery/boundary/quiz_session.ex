@@ -2,12 +2,43 @@ defmodule Mastery.Boundary.QuizSession do
   alias Mastery.Core.{Quiz, Response}
   use GenServer
 
-  def select_question(session) do
-    GenServer.call(session, :select_question)
+  def child_spec({%Quiz{title: title} = quiz, email}) do
+    # IO.puts("child_spec invoked: #{inspect({title, email})}")
+
+    %{
+      # unique process identifier for the supervisors
+      id: {__MODULE__, {title, email}},
+      # all the info needed to start this process
+      start: {__MODULE__, :start_link, [{quiz, email}]},
+      restart: :temporary
+    }
   end
 
-  def answer_question(session, answer) do
-    GenServer.call(session, {:answer_question, answer})
+  def start_link({%Quiz{title: title} = quiz, email}) do
+    # IO.puts("QuizSession.start_link. proc_name=#{inspect({title, email})}")
+    GenServer.start_link(__MODULE__, {quiz, email}, name: via({title, email}))
+  end
+
+  def take_quiz(quiz, email) do
+    DynamicSupervisor.start_child(
+      Mastery.Supervisor.QuizSession,
+      {__MODULE__, {quiz, email}}
+    )
+  end
+
+  def via({_quiz_title, _email} = name) do
+    # A via tuple is a tuple that OTP uses to register a process.
+    # They typically look like {:via, Registry, name}.
+    # :via is a fixed atom signalling this technique to OTP.
+    {:via, Registry, {Mastery.Registry.QuizSession, name}}
+  end
+
+  def select_question(name) do
+    GenServer.call(via(name), :select_question)
+  end
+
+  def answer_question(name, answer) do
+    GenServer.call(via(name), {:answer_question, answer})
   end
 
   def init({quiz, email}) do
@@ -28,9 +59,9 @@ defmodule Mastery.Boundary.QuizSession do
     |> maybe_finish(email)
   end
 
-  def maybe_finish(nil, _email), do: {:stop, :normal, :finished, nil}
+  defp maybe_finish(nil, _email), do: {:stop, :normal, :finished, nil}
 
-  def maybe_finish(quiz, email) do
+  defp maybe_finish(quiz, email) do
     {:reply, {quiz.current_question.asked, quiz.last_response.correct}, {quiz, email}}
   end
 end

@@ -7,11 +7,25 @@
 # idea taken from here: <https://itnext.io/a-collection-of-tips-for-elixirs-interactive-shell-iex-bff5e177405b>
 
 alias Mastery.Examples.Math
-Mastery.start_quiz_manager()
-Mastery.build_quiz(Math.quiz_fields())
-Mastery.add_template(Math.quiz().title, Math.template_fields())
 
-session = Mastery.take_quiz(Math.quiz().title, "mathy@email.com")
-Mastery.select_question(session) |> IO.puts()
-IO.puts("Type `Mastery.answer_question session, \"4\"` to answer the question")
+IO.puts("Supervision tree")
+Supervisor.which_children(Mastery.Supervisor) |> IO.inspect()
+IO.puts("------------------------------")
+
+Mastery.build_quiz(Math.quiz_fields())
+
+quiz_title = Math.quiz().title
+email = "mathy@email.com"
+
+Mastery.add_template(quiz_title, Math.template_fields())
+
+{^quiz_title, ^email} = Mastery.take_quiz(quiz_title, email)
+Mastery.select_question({quiz_title, email}) |> IO.puts()
+
+IO.puts(
+  "Type `Mastery.answer_question #{inspect({quiz_title, email})}, \"4\"` to answer the question"
+)
+
+:observer.start()
+
 # Mastery.answer_question(session, "wrong")
