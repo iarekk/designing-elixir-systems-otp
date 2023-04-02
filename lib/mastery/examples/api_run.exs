@@ -4,7 +4,7 @@
 # start iex
 # load the project using mix
 # execute the script below
-#
+# idea taken from here: <https://itnext.io/a-collection-of-tips-for-elixirs-interactive-shell-iex-bff5e177405b>
 
 alias Mastery.Examples.Math
 Mastery.start_quiz_manager()
