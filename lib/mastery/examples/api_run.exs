@@ -16,15 +16,21 @@ Mastery.build_quiz(Math.quiz_fields())
 
 quiz_title = Math.quiz().title
 email = "mathy@email.com"
+user = {quiz_title, email}
 
 Mastery.add_template(quiz_title, Math.template_fields())
 
-{^quiz_title, ^email} = Mastery.take_quiz(quiz_title, email)
-Mastery.select_question({quiz_title, email}) |> IO.puts()
+IO.puts("Registry before take_quiz call")
+Registry.lookup(Mastery.Registry.QuizSession, user) |> IO.inspect()
 
-IO.puts(
-  "Type `Mastery.answer_question #{inspect({quiz_title, email})}, \"4\"` to answer the question"
-)
+^user = Mastery.take_quiz(quiz_title, email)
+
+IO.puts("Registry after take_quiz call")
+Registry.lookup(Mastery.Registry.QuizSession, user) |> IO.inspect()
+
+Mastery.select_question({quiz_title, email}) |> IO.inspect()
+
+IO.puts("Type `Mastery.answer_question user, \"4\"` to answer the question")
 
 :observer.start()
 
