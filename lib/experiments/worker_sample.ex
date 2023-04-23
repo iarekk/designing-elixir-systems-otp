@@ -1,6 +1,7 @@
 defmodule Experiments.WorkerSample do
   def work(n) do
     if :rand.uniform(10) == 1 do
+      IO.puts("oops happened #{n}")
       raise "oops!"
     else
       {:result, :rand.uniform(n * 1000)}
@@ -22,17 +23,29 @@ defmodule Experiments.WorkerSample do
   end
 end
 
-# iex> Mastery.Core.WorkerSample.stream_work() |> Enum.take(10)
-
+# iex> Experiments.WorkerSample.stream_work |> Enum.take(20)
+# oops happened 3
+# oops happened 5
+# oops happened 14
 # [
-#   {:result, 395},
-#   {:result, 1894},
-#   {:result, 2449},
-#   {:error, %RuntimeError{message: "oops!"}, 4},
-#   {:result, 4416},
-#   {:result, 3631},
-#   {:result, 3155},
-#   {:result, 7736},
-#   {:result, 2585},
-#   {:result, 8095}
+#   {:result, 139},
+#   {:result, 1979},
+#   {:error, %RuntimeError{message: "oops!"}, 3},
+#   {:result, 2328},
+#   {:error, %RuntimeError{message: "oops!"}, 5},
+#   {:result, 4984},
+#   {:result, 593},
+#   {:result, 5683},
+#   {:result, 5617},
+#   {:result, 4157},
+#   {:result, 10051},
+#   {:result, 497},
+#   {:result, 5725},
+#   {:error, %RuntimeError{message: "oops!"}, 14},
+#   {:result, 2354},
+#   {:result, 5631},
+#   {:result, 9136},
+#   {:result, 8749},
+#   {:result, 1472},
+#   {:result, 2898}
 # ]
