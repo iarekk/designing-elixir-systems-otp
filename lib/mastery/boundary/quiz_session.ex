@@ -59,6 +59,34 @@ defmodule Mastery.Boundary.QuizSession do
     |> maybe_finish(email)
   end
 
+  def active_sessions_for(quiz_title) do
+    Mastery.Supervisor.QuizSession
+    |> DynamicSupervisor.which_children()
+    |> Enum.filter(&child_pid?/1)
+    |> Enum.flat_map(&active_sessions(&1, quiz_title))
+  end
+
+  def end_sessions(names) do
+    Enum.each(names, fn name -> GenServer.stop(via(name)) end)
+  end
+
+  # the result from which_children always looks like a list of below tuples
+  # more info: https://hexdocs.pm/elixir/1.14/DynamicSupervisor.html#which_children/1
+  # the first element is id which is always :undefined
+  defp child_pid?({:undefined, pid, :worker, [__MODULE__]}) when is_pid(pid) do
+    true
+  end
+
+  defp child_pid?(_child), do: false
+
+  defp active_sessions({:undefined, pid, :worker, [__MODULE__]}, title) do
+    Mastery.Registry.QuizSession
+    |> Registry.keys(pid)
+    |> Enum.filter(fn {quiz_title, _email} ->
+      quiz_title == title
+    end)
+  end
+
   defp maybe_finish(nil, _email), do: {:stop, :normal, :finished, nil}
 
   defp maybe_finish(quiz, email) do
