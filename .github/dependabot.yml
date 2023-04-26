@@ -10,7 +10,12 @@ updates:
     schedule:
       interval: "daily"
 
+  - package-ecosystem: "mix" # See documentation for possible values
+    directory: "/mastery_persistence" # Location of package manifests
+    schedule:
+      interval: "daily"
+
   - package-ecosystem: "github-actions"
-    directory: "/mastery"
+    directory: "/"
     schedule:
       interval: "daily"
