@@ -30,10 +30,12 @@ jobs:
     - name: Restore dependencies cache
       uses: actions/cache@v3
       with:
-        path: deps
+        path: mastery/deps
         key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
         restore-keys: ${{ runner.os }}-mix-
     - name: Install dependencies
       run: mix deps.get
+      working-directory: mastery
     - name: Run tests
       run: mix test
+      working-directory: mastery
