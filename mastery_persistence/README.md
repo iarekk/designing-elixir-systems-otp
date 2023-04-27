@@ -1,7 +1,6 @@
 # MasteryPersistence
 
-**TODO: Add description**
-
+To spin up local Posgres, run `docker run -itd -e POSTGRES_USER=ectotest -e POSTGRES_PASSWORD=ectotest -p 5432:5432 --name postgresql postgres`
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
