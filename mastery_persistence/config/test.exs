@@ -1,7 +1,7 @@
 import Config
 
 config :mastery_persistence, MasteryPersistence.Repo,
-  database: "mastery_test",
+  database: "ectotest",
   hostname: "localhost",
   username: "ectotest",
   password: "ectotest",
