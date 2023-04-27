@@ -33,7 +33,8 @@ defmodule Mastery.MixProject do
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
-      {:excoveralls, "~> 0.16", only: [:test], runtime: false}
+      {:excoveralls, "~> 0.16", only: [:test], runtime: false},
+      {:mastery_persistence, path: "../mastery_persistence"}
     ]
   end
 
