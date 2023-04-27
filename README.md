@@ -33,9 +33,9 @@ Some additions beyond the book material:
 5. In the terminal (on the PGSQL container), run `psql --username=ectotest` followed by  `\c mastery_dev`
 6. Results:
     ```
-        mastery_dev=# select * from responses;
-        id | quiz_title | template_name |    to    |     email     |   answer         | correct | inserted_at         |     updated_at      
-        ---+------------+---------------+----------+---------------+------------------+---------+---------------------+---------------------
-         1 | lol        | foo           | who dis? | lol@email.com | interrupting cow | t       | 2019-10-31 19:59:03 | 2019-10-31 19:59:03
-        (1 row)
+    mastery_dev=# select * from responses;
+    id | quiz_title | template_name |    to    |     email     |   answer         | correct | inserted_at         |     updated_at      
+    ---+------------+---------------+----------+---------------+------------------+---------+---------------------+---------------------
+     1 | lol        | foo           | who dis? | lol@email.com | interrupting cow | t       | 2019-10-31 19:59:03 | 2019-10-31 19:59:03
+    (1 row)
     ```
