@@ -61,11 +61,13 @@ jobs:
       run: mix ecto.create
       env:
         MIX_ENV: test
+      working-directory: mastery_persistence
 
     - name: Migrate PostGres database
       run: mix ecto.migrate
       env:
         MIX_ENV: test
+      working-directory: mastery_persistence
 
     - name: Run tests - mastery_persistence
       run: mix test
