@@ -18,17 +18,17 @@ Some additions beyond the book material:
 4. `cd mastery` and run iex: `iex -S mix`
 5. Run this in the shell:
 
-```elixir
-> MasteryPersistence.record_response(%{
-  quiz_title: "lol",
-  template_name: "foo",
-  to: "who dis?",
-  email: "lol@email.com",
-  answer: "interrupting cow",
-  correct: true,
-  timestamp: ~U[2019-10-31 19:59:03Z]
-})
-```
+    ```elixir
+    > MasteryPersistence.record_response(%{
+    quiz_title: "lol",
+    template_name: "foo",
+    to: "who dis?",
+    email: "lol@email.com",
+    answer: "interrupting cow",
+    correct: true,
+    timestamp: ~U[2019-10-31 19:59:03Z]
+    })
+    ```
 4. Open a new terminal, run `docker exec -it postgresql /bin/bash`
 5. In the terminal (on the PGSQL container), run `psql --username=ectotest` followed by  `\c mastery_dev`
 6. Results:
