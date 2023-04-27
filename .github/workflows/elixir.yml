@@ -57,6 +57,16 @@ jobs:
       run: mix deps.get
       working-directory: mastery_persistence
 
+    - name: Create PostGres database
+      run: mix ecto.create
+      env:
+        MIX_ENV: test
+
+    - name: Migrate PostGres database
+      run: mix ecto.migrate
+      env:
+        MIX_ENV: test
+
     - name: Run tests - mastery_persistence
       run: mix test
       working-directory: mastery_persistence
