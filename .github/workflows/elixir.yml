@@ -31,7 +31,6 @@ jobs:
         env:
           POSTGRES_USER: ectotest
           POSTGRES_PASSWORD: ectotest
-          POSTGRES_HOST: postgres
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
