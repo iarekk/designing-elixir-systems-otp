@@ -37,8 +37,8 @@ defmodule Mastery.Boundary.QuizSession do
     GenServer.call(via(name), :select_question)
   end
 
-  def answer_question(name, answer) do
-    GenServer.call(via(name), {:answer_question, answer})
+  def answer_question(name, answer, persistence_fn) do
+    GenServer.call(via(name), {:answer_question, answer, persistence_fn})
   end
 
   def init({quiz, email}) do
@@ -50,12 +50,15 @@ defmodule Mastery.Boundary.QuizSession do
     {:reply, new_quiz.current_question.asked, {new_quiz, email}}
   end
 
-  def handle_call({:answer_question, answer}, _from, {quiz, email}) do
+  def handle_call({:answer_question, answer, fun}, _from, {quiz, email}) do
     resp = Response.new(quiz, email, answer)
+    fun = fun || fn r, f -> f.(r) end
 
-    quiz
-    |> Quiz.answer_question(resp)
-    |> Quiz.select_question()
+    fun.(resp, fn r ->
+      quiz
+      |> Quiz.answer_question(r)
+      |> Quiz.select_question()
+    end)
     |> maybe_finish(email)
   end
 
