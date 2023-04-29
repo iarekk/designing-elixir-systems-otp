@@ -25,12 +25,13 @@ defmodule MasteryTest do
 
   test "Take a quiz, manage lifecycle and persist responses" do
     title = Keyword.fetch(Math.quiz_fields(), :title)
-
+    old_response_count = response_count()
     session = take_quiz("yes_mathter@example.com")
+
     select_question(session)
     assert give_wrong_answer(session) == {"1 + 2", false}
     assert give_right_answer(session) == {"1 + 2", true}
-    assert response_count() > 0
+    assert response_count() > old_response_count
     assert give_right_answer(session) == :finished
     assert QuizSession.active_sessions_for(title) == []
   end
