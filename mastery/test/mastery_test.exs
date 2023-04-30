@@ -28,6 +28,8 @@ defmodule MasteryTest do
     old_response_count = response_count()
     session = take_quiz("yes_mathter@example.com")
 
+    allow_session_to_write_to_db(self(), session)
+
     select_question(session)
     assert give_wrong_answer(session) == {"1 + 2", false}
     assert give_right_answer(session) == {"1 + 2", true}
@@ -38,7 +40,6 @@ defmodule MasteryTest do
 
   defp enable_persistence() do
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
-    Ecto.Adapters.SQL.Sandbox.mode(Repo, {:shared, self()})
   end
 
   defp response_count() do
@@ -73,5 +74,10 @@ defmodule MasteryTest do
       "3",
       &MasteryPersistence.record_response/2
     )
+  end
+
+  defp allow_session_to_write_to_db(self_pid, session) do
+    allow_pid = GenServer.whereis(QuizSession.via(session))
+    Ecto.Adapters.SQL.Sandbox.allow(Repo, self_pid, allow_pid)
   end
 end
