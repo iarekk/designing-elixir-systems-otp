@@ -30,6 +30,10 @@ defmodule Mastery.Examples.Math do
     [mastery: 3, title: "simple_addition_harder_faster"]
   end
 
+  def quiz_medium_fields() do
+    [mastery: 3, title: "simple_addition_b_grade"]
+  end
+
   def quiz() do
     quiz_fields()
     |> Quiz.new()
