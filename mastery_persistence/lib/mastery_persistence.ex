@@ -36,21 +36,4 @@ defmodule MasteryPersistence do
     |> Repo.all()
     |> Enum.into(Map.new())
   end
-
-  @moduledoc """
-  Documentation for `MasteryPersistence`.
-  """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> MasteryPersistence.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
 end
