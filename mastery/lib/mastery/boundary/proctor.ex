@@ -12,12 +12,13 @@ defmodule Mastery.Boundary.Proctor do
     {:ok, quizzes}
   end
 
-  def schedule_quiz(proctor \\ __MODULE__, quiz, temps, start_at, end_at) do
+  def schedule_quiz(proctor \\ __MODULE__, quiz, temps, start_at, end_at, notify_pid) do
     quiz = %{
       fields: quiz,
       templates: temps,
       start_at: start_at,
-      end_at: end_at
+      end_at: end_at,
+      notify_pid: notify_pid
     }
 
     GenServer.call(proctor, {:schedule_quiz, quiz})
@@ -41,7 +42,7 @@ defmodule Mastery.Boundary.Proctor do
   end
 
   def handle_info(:timeout, quizzes) do
-    IO.puts("handle_info :timeout")
+    # IO.puts("handle_info :timeout")
     now = DateTime.utc_now()
 
     remaining_quizzes = start_quizzes(quizzes, now)
@@ -50,7 +51,7 @@ defmodule Mastery.Boundary.Proctor do
     repl
   end
 
-  def handle_info({:end_quiz, title}, quizzes) do
+  def handle_info({:end_quiz, title, notify_pid}, quizzes) do
     QuizManager.remove_quiz(title)
 
     title
@@ -58,7 +59,7 @@ defmodule Mastery.Boundary.Proctor do
     |> QuizSession.end_sessions()
 
     Logger.info("Stopped quiz #{title}.")
-
+    notify_stopped(notify_pid, title)
     handle_info(:timeout, quizzes)
   end
 
@@ -84,7 +85,7 @@ defmodule Mastery.Boundary.Proctor do
   end
 
   defp start_quizzes(quizzes, now) do
-    IO.puts("start_quizzes inputs: #{inspect(Enum.map(quizzes, & &1.start_at))}")
+    # IO.puts("start_quizzes inputs: #{inspect(Enum.map(quizzes, & &1.start_at))}")
 
     sorted_quizzes = Enum.sort_by(quizzes, & &1.start_at, DateTime)
 
@@ -99,11 +100,20 @@ defmodule Mastery.Boundary.Proctor do
 
   def start_quiz(quiz, now) do
     title = Keyword.fetch!(quiz.fields, :title)
-    Logger.info("Starting quiz #{title}...")
+    Logger.info("Starting quiz #{title}.")
+    notify_start(quiz)
     QuizManager.build_quiz(quiz.fields)
     Enum.each(quiz.templates, &QuizManager.add_template(title, &1))
     timeout = DateTime.diff(quiz.end_at, now, :millisecond)
     # end the quiz after a timeout
-    Process.send_after(self(), {:end_quiz, title}, timeout)
+    Process.send_after(self(), {:end_quiz, title, quiz.notify_pid}, timeout)
   end
+
+  defp notify_start(%{notify_pid: nil}), do: nil
+
+  defp notify_start(quiz),
+    do: send(quiz.notify_pid, {:started, Keyword.fetch!(quiz.fields, :title)})
+
+  defp notify_stopped(nil, _title), do: nil
+  defp notify_stopped(pid, title), do: send(pid, {:stopped, title})
 end
