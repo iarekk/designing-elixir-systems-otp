@@ -47,7 +47,7 @@ jobs:
         otp-version: '>=25' # Define the OTP version [required]
 
     - name: Restore dependencies cache - mastery_persistence
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: mastery_persistence/deps
         key: ${{ runner.os }}-mixpersist-${{ hashFiles('**/mix.lock') }}
@@ -74,7 +74,7 @@ jobs:
       working-directory: mastery_persistence
 
     - name: Restore dependencies cache - mastery
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: mastery/deps
         key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
